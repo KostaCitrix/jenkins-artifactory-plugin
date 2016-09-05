@@ -16,6 +16,8 @@
 
 package org.jfrog.hudson.release.scm;
 
+import java.io.IOException;
+
 import hudson.FilePath;
 import hudson.model.AbstractBuild;
 import hudson.model.AbstractProject;
@@ -29,8 +31,6 @@ import org.jfrog.hudson.release.scm.perforce.P4Manager;
 import org.jfrog.hudson.release.scm.perforce.PerforceCoordinator;
 import org.jfrog.hudson.release.scm.svn.SubversionCoordinator;
 
-import java.io.IOException;
-
 /**
  * This class coordinates between the release steps and required scm actions based on the svm manager.
  *
@@ -38,12 +38,16 @@ import java.io.IOException;
  */
 public abstract class AbstractScmCoordinator implements ScmCoordinator {
 
-    protected final AbstractBuild build;
+    protected final JenkinsBuild build;
     protected final BuildListener listener;
     protected boolean modifiedFilesForReleaseVersion;
     protected boolean modifiedFilesForDevVersion;
 
     public AbstractScmCoordinator(AbstractBuild build, BuildListener listener) {
+        this(new JenkinsBuildImpl(build), listener);
+    }
+
+    public AbstractScmCoordinator(JenkinsBuild build, BuildListener listener) {
         this.build = build;
         this.listener = listener;
     }

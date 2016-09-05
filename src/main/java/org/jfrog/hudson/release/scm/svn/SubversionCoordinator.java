@@ -41,7 +41,7 @@ public class SubversionCoordinator extends AbstractScmCoordinator {
     }
 
     public void prepare() throws IOException, InterruptedException {
-        scmManager = new SubversionManager(build, listener);
+        scmManager = new SubversionManager(build.getBuild(), listener);
     }
 
     public void afterSuccessfulReleaseVersionBuild() throws InterruptedException, IOException {
