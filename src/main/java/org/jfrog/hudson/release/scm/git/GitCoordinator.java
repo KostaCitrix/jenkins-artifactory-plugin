@@ -23,8 +23,8 @@ import org.apache.commons.lang.StringUtils;
 import org.eclipse.jgit.lib.ObjectId;
 import org.jfrog.hudson.release.ReleaseAction;
 import org.jfrog.hudson.release.scm.AbstractScmCoordinator;
-import org.jfrog.hudson.release.scm.JenkinsBuild;
-import org.jfrog.hudson.release.scm.JenkinsBuildImpl;
+import org.jfrog.hudson.release.scm.BuildWrapper;
+import org.jfrog.hudson.release.scm.BuildWrapperImpl;
 
 import java.io.IOException;
 import java.util.logging.Level;
@@ -46,10 +46,10 @@ public class GitCoordinator extends AbstractScmCoordinator {
     private State state = new State();
 
     public GitCoordinator(AbstractBuild build, BuildListener listener, ReleaseAction releaseAction) {
-        this(new JenkinsBuildImpl(build), listener, releaseAction);
+        this(new BuildWrapperImpl(build), listener, releaseAction);
     }
 
-    public GitCoordinator(JenkinsBuild build, BuildListener listener, ReleaseAction releaseAction) {
+    public GitCoordinator(BuildWrapper build, BuildListener listener, ReleaseAction releaseAction) {
         super(build, listener);
         this.releaseAction = releaseAction;
     }

@@ -9,10 +9,11 @@ import hudson.model.Result;
 import hudson.model.TaskListener;
 
 /**
- * The methods actually used in ScmCoordinator & ScmManager of hudson.model.AbstractBuild
- * Using the actual Jenkins classes, writing Unit tests was infeasible
+ * Wrap the hudson.model.AbstractBuild type, exposing the methods actually used in
+ * ScmCoordinator & ScmManager. The idea is to make classes using AbstractBuild easier
+ * to unit-test as the AbstractBuild class does very werid things in its initialization.
  */
-public interface JenkinsBuild<P extends AbstractProject<P,R>,R extends AbstractBuild<P,R>> {
+public interface BuildWrapper<P extends AbstractProject<P,R>,R extends AbstractBuild<P,R>> {
 
     Result getResult();
 

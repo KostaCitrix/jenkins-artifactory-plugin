@@ -38,16 +38,16 @@ import org.jfrog.hudson.release.scm.svn.SubversionCoordinator;
  */
 public abstract class AbstractScmCoordinator implements ScmCoordinator {
 
-    protected final JenkinsBuild build;
+    protected final BuildWrapper build;
     protected final BuildListener listener;
     protected boolean modifiedFilesForReleaseVersion;
     protected boolean modifiedFilesForDevVersion;
 
     public AbstractScmCoordinator(AbstractBuild build, BuildListener listener) {
-        this(new JenkinsBuildImpl(build), listener);
+        this(new BuildWrapperImpl(build), listener);
     }
 
-    public AbstractScmCoordinator(JenkinsBuild build, BuildListener listener) {
+    public AbstractScmCoordinator(BuildWrapper build, BuildListener listener) {
         this.build = build;
         this.listener = listener;
     }

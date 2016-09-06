@@ -8,11 +8,14 @@ import hudson.model.AbstractProject;
 import hudson.model.Result;
 import hudson.model.TaskListener;
 
-public class JenkinsBuildImpl<P extends AbstractProject<P,R>,R extends AbstractBuild<P,R>> implements JenkinsBuild {
+/**
+ * @see org.jfrog.hudson.release.scm.BuildWrapper
+ */
+public class BuildWrapperImpl<P extends AbstractProject<P,R>,R extends AbstractBuild<P,R>> implements BuildWrapper {
 
     private final AbstractBuild<P, R> build;
 
-    public JenkinsBuildImpl(AbstractBuild<P, R> build) {
+    public BuildWrapperImpl(AbstractBuild<P, R> build) {
         this.build = build;
     }
 
