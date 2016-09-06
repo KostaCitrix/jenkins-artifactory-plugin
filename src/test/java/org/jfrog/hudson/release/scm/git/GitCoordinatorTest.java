@@ -164,6 +164,63 @@ public class GitCoordinatorTest extends EasyMockSupport {
     }
 
     @Test
+    public void releaseBranch_AndTag_noVersionChanges_Success() throws Exception {
+        TestParams testParams = new TestParams();
+        testParams.releaseBranchName = "release-v2.1";
+        testParams.tagName = "v2.1";
+        testParams.releaseVersionModified = false;
+        testParams.devVersionModified = false;
+        testParams.result = Result.SUCCESS;
+        testParams.setupBasicExpectations();
+
+        expectCheckoutReleaseBranch(testParams);
+        expectCreateTag(testParams, tagCommitMessage);
+        expectCheckoutCheckoutBranch();
+        expectPushReleaseBranch(testParams);
+
+        run(testParams);
+    }
+
+    @Test
+    public void releaseBranch_AndTag_onlyReleaseVersionChanges_Success() throws Exception {
+        TestParams testParams = new TestParams();
+        testParams.releaseBranchName = "release-v2.1";
+        testParams.tagName = "v2.1";
+        testParams.releaseVersionModified = true;
+        testParams.devVersionModified = false;
+        testParams.result = Result.SUCCESS;
+        testParams.setupBasicExpectations();
+
+        expectCheckoutReleaseBranch(testParams);
+        expectCommitWorkingCopy(tagCommitMessage);
+        expectCreateTag(testParams, tagCommitMessage);
+        expectCheckoutCheckoutBranch();
+        expectPushReleaseBranch(testParams);
+
+        run(testParams);
+    }
+
+    @Test
+    public void releaseBranch_AndTag_onlyDevVersionChanges_Success() throws Exception {
+        TestParams testParams = new TestParams();
+        testParams.releaseBranchName = "release-v2.1";
+        testParams.tagName = "v2.1";
+        testParams.releaseVersionModified = false;
+        testParams.devVersionModified = true;
+        testParams.result = Result.SUCCESS;
+        testParams.setupBasicExpectations();
+
+        expectCheckoutReleaseBranch(testParams);
+        expectCreateTag(testParams, tagCommitMessage);
+        expectCheckoutCheckoutBranch();
+        expectCommitWorkingCopy(devVersionCommitMessage);
+        expectPushReleaseBranch(testParams);
+        expectPushCheckoutBranch();
+
+        run(testParams);
+    }
+
+    @Test
     public void releaseBranch_AndTag_Aborted() throws Exception {
         TestParams testParams = new TestParams();
         testParams.releaseBranchName = "release-v2.1";
@@ -290,9 +347,41 @@ public class GitCoordinatorTest extends EasyMockSupport {
     }
 
     @Test
-    public void noBranchNoTag_Success() throws Exception {
+    public void noReleaseBranch_NoTag_onlyReleaseVersionChange_Success() throws Exception {
         TestParams testParams = new TestParams();
         testParams.result = Result.SUCCESS;
+        testParams.releaseVersionModified = true;
+        testParams.devVersionModified = false;
+        testParams.setupBasicExpectations();
+
+        expectCheckoutCheckoutBranch();
+        expectCommitWorkingCopy(tagCommitMessage);
+        expectPushCheckoutBranch();
+
+        run(testParams);
+    }
+
+    @Test
+    public void noReleaseBranch_NoTag_onlyDevVersionChange_Success() throws Exception {
+        TestParams testParams = new TestParams();
+        testParams.result = Result.SUCCESS;
+        testParams.releaseVersionModified = false;
+        testParams.devVersionModified = true;
+        testParams.setupBasicExpectations();
+
+        expectCheckoutCheckoutBranch();
+        expectCommitWorkingCopy(devVersionCommitMessage);
+        expectPushCheckoutBranch();
+
+        run(testParams);
+    }
+
+    @Test
+    public void noReleaseBranch_NoTag_noVersionChange_Success() throws Exception {
+        TestParams testParams = new TestParams();
+        testParams.result = Result.SUCCESS;
+        testParams.releaseVersionModified = false;
+        testParams.devVersionModified = false;
         testParams.setupBasicExpectations();
 
         expectCheckoutCheckoutBranch();
